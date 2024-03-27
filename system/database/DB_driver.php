@@ -355,6 +355,50 @@ abstract class CI_DB_driver {
 	 */
 	protected $_count_string = 'SELECT COUNT(*) AS ';
 
+	/**
+	 * List of dynamic properties
+	 *
+	 * @var	mixed[]
+	 */
+	protected $_internal_properties	= array();
+	public function __set(string $name, mixed $value): void
+	{
+		if(isset($this->$name))
+		{
+			$this->$name = $value;
+		}
+		else
+		{
+			$this->_internal_properties[$name] = $value;
+		}
+	}
+	public function &__get($name)
+	{
+		if(isset($this->$name))
+		{
+			return $this->$name;
+		}
+		else
+		{
+			return $this->_internal_properties[$name];
+		}
+	}
+	public function __isset($name)
+	{
+		return isset($this->$name) || isset($this->_internal_properties[$name]);
+	}
+	public function __unset($name)
+	{
+		if(isset($this->$name))
+		{
+			unset($this->$name);
+		}
+		else
+		{
+			unset($this->_internal_properties[$name]);
+		}
+	}
+
 	// --------------------------------------------------------------------
 
 	/**

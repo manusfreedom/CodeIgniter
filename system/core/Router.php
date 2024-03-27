@@ -59,6 +59,13 @@ class CI_Router {
 	public $config;
 
 	/**
+	 * CI_URI class object
+	 *
+	 * @var	object
+	 */
+	protected $uri;
+
+	/**
 	 * List of routes
 	 *
 	 * @var	array

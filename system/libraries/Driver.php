@@ -60,6 +60,13 @@ class CI_Driver_Library {
 	protected $valid_drivers = array();
 
 	/**
+	 * Array of loaded drivers
+	 *
+	 * @var array
+	 */
+	protected $loaded_drivers = array();
+
+	/**
 	 * Name of the current class - usually the driver class
 	 *
 	 * @var string
@@ -78,7 +85,7 @@ class CI_Driver_Library {
 	public function __get($child)
 	{
 		// Try to load the driver
-		return $this->load_driver($child);
+		return $this->loaded_drivers[$child] ?? $this->load_driver($child);
 	}
 
 	/**
@@ -186,8 +193,8 @@ class CI_Driver_Library {
 		// Instantiate, decorate and add child
 		$obj = new $class_name();
 		$obj->decorate($this);
-		$this->$child = $obj;
-		return $this->$child;
+		$this->loaded_drivers[$child] = $obj;
+		return $this->loaded_drivers[$child];
 	}
 
 }
